@@ -9,7 +9,7 @@ pass: admin
 catatan:
 - Untuk mengakses admin tembak file daftar_pesanan_operator.php lalu masukkan email dan pass
 - Daftar pesanan customer tidak ditampilkan langsung di index dan simpan.php maupun form input. kecuali di operator
-- Daftar_pesanan hanya muncul di sisi operator saja
+- Daftar pesanan hanya muncul di sisi operator saja memakai file daftar_pesanan_operator.php
 - Customer hanya isi form input
 - Masih ada fitur yang belum selesai pada perhitungan javascript yang dimana ada kondisi nilai harga input sudah klik hitung dan
   ingin langsung mengubah nilai inputannya lagi diform tersebut, tombol simpan tetap aktif. seharusnya tombol simpan dimatikan terlebih dahulu setelah ada nilai hitung yang berubah lagi
