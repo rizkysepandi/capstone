@@ -1,4 +1,4 @@
-# rzkyseph
+# capstone
 email: admin@contoh.com
 pass: admin
 
