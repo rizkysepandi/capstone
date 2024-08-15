@@ -1,0 +1,23 @@
+.hero-header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../bahan/dagodreampark.jpg'); /*background image transparan*/
+    background-size: cover;
+    background-position: center; 
+}
+
+.bg-warna{
+    background-color: #CCCCFF; /*tambah warna background*/
+}
+
+.text-warna{
+    color: #CCCCFF; /*mengatur warna text dan ketebalan*/
+    font-weight: 500;
+} 
+
+.card-fit{
+    height: 200px; /* Atur tinggi gambar */
+    object-fit: cover; /* Memastikan gambar menutupi area tanpa merusak proporsi */
+}
+    
+.card-isi{
+    min-height: 150px; /* Atur ketinggian minimum dari konten */
+}
