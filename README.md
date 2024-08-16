@@ -15,4 +15,4 @@ catatan:
   ingin langsung mengubah nilai inputannya lagi diform tersebut, tombol simpan tetap aktif. seharusnya tombol simpan dimatikan terlebih dahulu setelah ada nilai hitung yang berubah lagi
 - Tampilan web belum sepenuhnya dinamis
 - Pada tabel sql tidak semuanya isi value tabelpesanan dimasukkan saat isi form seperti tgl mulai wisata, id wisata dan lainnya.
-- Ketika beralih ke tab baru atau refresh tab dan posisi dihalaman form input, mengakibat data yang telah diisi pada kolom akan hilang. Klik dahulu tombol simpan.
+- Tidak ada notifikasi alert ketika beralih ke tab baru atau refresh tab dan posisi dihalaman form input, mengakibat data yang telah diisi pada kolom akan hilang. Klik dahulu tombol simpan.
