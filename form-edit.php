@@ -65,7 +65,7 @@ function active_checkbox($value, $input){
 		    </div>
 		    <div class="mb-3">
 				<label><b>Harga Paket Perjalanan: </b></label>
-				<input type="text" class="form-control" id="tampilsubtotal" value="<?php echo $row['harga_paket'];?>" name="harga_paket" readonly>
+				<input type="text" class="form-control" id="tampilsubtotal" value="<?php echo $row['harga_paket']; echo"0.000,00"?>" name="harga_paket" readonly>
 			</div>
 			<div class="mb-3">
 				<label><b>Jumlah Peserta <?php echo $row['jumlah_peserta'];?></b></label><br>
@@ -76,7 +76,7 @@ function active_checkbox($value, $input){
 		    </div>
 			<div class="mb-3">
 				<label><b>Jumlah Tagihan: </b></label>
-				<input type="text" class="form-control" id="tampiltagihan" value="<?php echo $row['jumlah_tagihan'];?>" name="jumlah_tagihan" readonly>
+				<input type="text" class="form-control" id="tampiltagihan" value="<?php echo $row['jumlah_tagihan']; echo "0.000,00";?>" name="jumlah_tagihan" readonly>
 			</div>
 			
 			<div class="mb-3">
