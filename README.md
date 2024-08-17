@@ -16,4 +16,4 @@ catatan:
 - Tampilan web belum sepenuhnya dinamis
 - Pada tabel sql tidak semuanya isi value tabelpesanan dimasukkan saat isi form seperti tgl mulai wisata, id wisata dan lainnya.
 - Tidak ada notifikasi alert ketika beralih ke tab baru atau refresh tab posisi dihalaman form input untuk mengingatkan user data yang telah diisi sebagian pada kolom akan hilang.
-- Form edit sudah bisa dimatikan tombol simpan, jika ada perubahan data pada saat pengisian berlangsung dan harus diklik tombol hitung agar tombol simpan menyala.
+- Form edit sudah bisa nyala/matikan tombol simpan, jika ada perubahan data pada saat pengisian berlangsung dan harus diklik tombol hitung agar tombol simpan menyala.
