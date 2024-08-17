@@ -1,8 +1,8 @@
 <?php  
 include 'koneksi.php';
 $id = $_GET['id_pesanan'];
-$pesanaN = mysqli_query($koneksi, "select * from pesanan where id_pesanan='$id'");
-$row = mysqli_fetch_array($pesanaN);
+$pesanan = mysqli_query($koneksi, "select * from pesanan where id_pesanan='$id'");
+$row = mysqli_fetch_array($pesanan);
 
 // Membuat data jurusan menjadi dinamis dalam bentuk array
 $durasi_wisata = array('2', '7', '14', '30');
@@ -19,13 +19,13 @@ function active_checkbox($value, $input){
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-	<title>Form Pemesanan</title>
+	<title>Form Edit Pemesanan</title>
 </head>
 <body>
 	<div class="container mt-3">
 		<form method="post" action="edit.php" id="my_form">
 			<input type="hidden" value="<?php echo $row['id_pesanan'];?>" name="id_pesanan">
-		    <h1>Form Pemesanan Paket Wisata</h1>
+		    <h1>Form Edit Pemesanan Paket Wisata</h1>
 		    <div class="mb-3 mt-3">
 			    <label><b>Nama Pemesan: </b></label>
 			    <input type="text" class="form-control" value="<?php echo $row['nama_pemesan'];?>" placeholder="Masukkan Nama" name="nama_pemesan" required>
@@ -36,11 +36,12 @@ function active_checkbox($value, $input){
 			</div>
 			<div class="mb-3">
 				<label><b>Tanggal Mulai Wisata: </b></label>
-				<input type="datetime" class="form-control" value="<?php echo $row['tanggal_mulai_wisata'];?>" id="datetime" name="tanggal_mulai_wisata">
+				<input type="date" class="form-control" value="<?php echo $row['tanggal_mulai_wisata'];?>" id="datetime" name="tanggal_mulai_wisata" required>
 			</div>
 			<div class="mb-3">
 				<label class="form-label"><b>Pilih Durasi Wisata:</b></label>
-				<select class="form-select" id="durasi" name="durasi_wisata">
+				<select class="form-select" id="durasi" name="durasi_wisata" required>
+					<option value="0">-- Pilih Durasi Wisata --</option>
 					<?php 
 						foreach ($durasi_wisata as $d){
 							echo "<option value='$d' ";
@@ -65,10 +66,10 @@ function active_checkbox($value, $input){
 		    </div>
 		    <div class="mb-3">
 				<label><b>Harga Paket Perjalanan: </b></label>
-				<input type="text" class="form-control" id="tampilsubtotal" value="<?php echo $row['harga_paket']; echo"0.000,00"?>" name="harga_paket" readonly>
+				<input type="text" class="form-control" id="tampilsubtotal" value="<?php echo $row['harga_paket']; echo "0.000,00"?>" name="harga_paket" readonly>
 			</div>
 			<div class="mb-3">
-				<label><b>Jumlah Peserta <?php echo $row['jumlah_peserta'];?></b></label><br>
+				<label><b>Jumlah Peserta</b></label><br>
 				<input type="number" id="jumlahpeserta" value="<?php echo $row['jumlah_peserta'];?>" min="0" step="1" name="jumlah_peserta">
 			</div>
 			<div class="mb-3">
@@ -76,11 +77,11 @@ function active_checkbox($value, $input){
 		    </div>
 			<div class="mb-3">
 				<label><b>Jumlah Tagihan: </b></label>
-				<input type="text" class="form-control" id="tampiltagihan" value="<?php echo $row['jumlah_tagihan']; echo "0.000,00";?>" name="jumlah_tagihan" readonly>
+				<input type="text" class="form-control" id="tampiltagihan" value="<?php echo $row['jumlah_tagihan']; echo "0.000,00"?>" name="jumlah_tagihan" readonly>
 			</div>
 			
 			<div class="mb-3">
-			    <button type="submit" id="tombol_simpan" class="btn btn-primary" value="simpan" onclick="confirm_simpan()">Simpan</button>
+			    <button type="submit" id="tombol_simpan" class="btn btn-primary" value="simpan">Simpan</button>
 			    <button type="button" id="resetbtn" class="btn btn-danger">Reset</button>
 			    <a href="daftar_pesanan_operator.php" class="btn btn-primary">Kembali</a> 
 			</div> 
@@ -93,70 +94,70 @@ function active_checkbox($value, $input){
 
 		$(document).ready(function(){
 
-			// Mendapatkan tanggal dan waktu lokal saat ini dari desktop
+			//Mendapatkan tanggal dan waktu lokal saat ini dari desktop
             function tglwaktulocal(){
                 var sekarang = new Date();
                 var tahun = sekarang.getFullYear();
                 var bulan = ("0" + (sekarang.getMonth() + 1)).slice(-2); // Bulan dimulai dari 0
                 var hari = ("0" + sekarang.getDate()).slice(-2);
                 
-                // Mengembalikan dalam format yyyy-mm-ddTHH:MM
+                //Mengembalikan dalam format yyyy-mm-ddTHH:MM
                 return `${tahun}-${bulan}-${hari}`;
             }
             // Set tanggal dan waktu saat ini ke elemen input
             document.getElementById('datetime').value = tglwaktulocal();
 
-            /*------------------------------------------------*/
-            //Cek input berdasarkan kondisi form field untuk disabled fitur
 
+			/*------------------------------------------------*/
+	        //Cek input berdasarkan kondisi form field untuk disabled fitur
+	        var nilaiAwalSubtotal;
+	        var nilaiawalpeserta;
+			var tombol_submit = $('#tombol_simpan');
+	             
 			function cekinput() {
 		        var dropdown = $("#durasi").val();
 		        var checkboxes = $(".layanan");
-		        var hargapkt = $("#tampilsubtotal");
-		        var jumlahps = $("#jumlahpeserta");
+		        var hargapkt = $("#tampilsubtotal").val();
+		        var jumlahps = $("#jumlahpeserta").val();
 		        var tombol_hitung = $('#hitungtotal');
-		        var sumtagihan = $.trim($('#tampiltagihan').val());
-		        var tombol_submit = $('#tombol_simpan');
+		        var sumtagihan = $('#tampiltagihan');
+
+			    var nilaiSubtotal = $.trim(hargapkt);
+	            var nilaipeserta = $.trim(jumlahps);
+
+	            // Log nilai subtotal ke konsol
+	            //console.log("Nilai subtotal:", nilaiSubtotal);
+	            //console.log("Nilai peserta:", nilaipeserta);
+
+	            // Matikan tombol simpan jika nilai berubah dari nilai awal
+	            if (nilaiSubtotal !== nilaiAwalSubtotal || jumlahps !== nilaiawalpeserta) {
+	                tombol_submit.prop('disabled', true);
+	                //console.log("Tombol simpan dimatikan.");
+	            } else {
+	                tombol_submit.prop('disabled', false);
+	                //console.log("Tombol simpan diaktifkan.");
+	            }
 
 		        if (dropdown === "0") {
-		            // Nonaktifkan semua fitur jika dropdown belum dipilih
+		            // Nonaktifkan fitur jika dropdown belum dipilih
 		            checkboxes.prop('disabled', true).prop('checked', false);
-		            hargapkt.prop('disabled', true);
-		            jumlahps.prop('disabled', true);
+		            $('#tampilsubtotal').prop('disabled', true);
+		            $('#jumlahpeserta').prop('disabled', true);
 		            tombol_hitung.prop('disabled', true);
-		            $('#tampiltagihan').prop('disabled', true);
+		            sumtagihan.prop('disabled', true);
 		        } else {
-		            // Aktifkan semua fitur jika dropdown memilih nilai lain
+		            // Aktifkan fitur jika dropdown memilih nilai lain
 		            checkboxes.prop('disabled', false);
-		            hargapkt.prop('disabled', false);
-		            jumlahps.prop('disabled', false);
+		            $('#tampilsubtotal').prop('disabled', false);
+		            $('#jumlahpeserta').prop('disabled', false);
 		            tombol_hitung.prop('disabled', false);
-		            $('#tampiltagihan').prop('disabled', false);
+		            sumtagihan.prop('disabled', false);
 		        }
 
-		        // Cek apakah sumtagihan kosong atau tidak
-		        if (sumtagihan === "" || sumtagihan === "0") {
-		            // Nonaktifkan tombol submit jika #tampiltagihan kosong
-		            tombol_submit.prop('disabled', true);
-		        } else {
-		            // Aktifkan tombol submit jika ada nilai di #tampiltagihan
-		            tombol_submit.prop('disabled', false);
-		        }
 		    }
 
-		    // Memulai interval untuk menjalankan cekinput setiap 1 detik
-		    var intervalID = setInterval(cekinput, 1000);
-
-		    // Pasang event listener pada setiap input
-		    $("#durasi, #jumlahpeserta, #tampiltagihan").on('change input', function () {
-		        cekinput();
-		        // Hentikan interval jika tombol submit aktif (artinya kondisi sudah benar)
-		        if ($('#tampiltagihan').val() !== "" && $('#tampiltagihan').val() !== "0") {
-		            clearInterval(intervalID);
-		        }
-		    });
-		    // Panggil fungsi cekinput saat halaman dimuat pertama kali
-		    cekinput();
+	     	// Pasang event listener pada setiap input
+		    $("#durasi, #jumlahpeserta, #tampiltagihan, .layanan").on('change input', cekinput);
 
 			/*------------------------------------------------*/
 
@@ -203,6 +204,9 @@ function active_checkbox($value, $input){
 
 		        // Menampilkan subtotal di dalam elemen dengan id tampilsubtotal
 		        $('#tampilsubtotal').val(IDR(hasilsub));
+
+		        // Panggil cekinput untuk memastikan tombol simpan aktif/nonaktif
+		        cekinput();
 		    }
 
 		    // Mengaktifkan event listener pada dropdown dan checkbox
@@ -211,30 +215,34 @@ function active_checkbox($value, $input){
 		        menu.addEventListener('change', hitungdropcheck);
 		    });
 
-		    // Simulasikan perubahan awal jika perlu
-		    $('#durasi').trigger('change');
-
-		    /*------------------------------------------------*/
-
-		    //Konversi format mata uang rupiah
-		    function IDR(konversi) {
-		        // Menggunakan Intl.NumberFormat untuk format IDR
-		        return new Intl.NumberFormat('id-ID', {
-		        	minimumFractionDigits: 2, // Jumlah minimum angka desimal
-                	maximumFractionDigits: 2  // Jumlah maksimum angka desimal	
-		        }).format(konversi);
-		    }
+		    $('#hitungtotal').on('click', function(){
+		        tombol_submit.prop('disabled', false);
+		        console.log('Tombol hitung diklik, tombol submit diaktifkan.');
+		    });
 
 			/*------------------------------------------------*/
 
-			$('#hitungtotal').click(function (){
+		    //Konversi format mata uang rupiah
+		    function IDR(konversi) {
+		        return new Intl.NumberFormat('id-ID', {
+		            minimumFractionDigits: 2,
+		            maximumFractionDigits: 2
+		        }).format(konversi);
+		    }
+
+			$('#hitungtotal').click(function(){
 				var jumlah1 = parseFloat($('#tampilsubtotal').val().replace(/\./g, '')) || 0;
 				var jumlah2 = parseFloat($('#jumlahpeserta').val()) || 0;
 				var hasiljum = jumlah1 * jumlah2;
-
 				$('#tampiltagihan').val(IDR(hasiljum));
-
 			});
+
+			// Simpan nilai awal dari #tampilsubtotal dan #jumlahpeserta saat halaman dimuat
+		    nilaiAwalSubtotal = $.trim($('#tampilsubtotal').val());
+		    nilaiawalpeserta = $.trim($('#jumlahpeserta').val());
+
+		    // Panggil fungsi cekinput saat halaman dimuat pertama kali
+		    cekinput();
 
 			/*------------------------------------------------*/
 
@@ -255,7 +263,12 @@ function active_checkbox($value, $input){
                 });
 
                 // set dropdown kenilai default
-                document.getElementById('durasi').value = '0';
+                $("input[name='nama_pemesan']").val(''); //Hapus kolom nama
+			    $("input[name='nomor_hp']").val(''); //Hapus kolom nomor hp
+			    $("#datetime").val(''); //Hapus kolom tanggal
+			    $("#durasi").val('0'); // Placeholder untuk kolom durasi
+			    $("#tampilsubtotal").val(''); //Hapus kolom subtotal
+			    $("input[name='jumlah_tagihan']").val(''); //Hapus kolom jumlah tagihan
 
                 //Input jumlah peserta disabled
                 jumlahps.prop('disabled', true);
@@ -274,16 +287,6 @@ function active_checkbox($value, $input){
             });
 
 		});
-
-	function confirm_simpan() {
-        if (confirm("Anda yakin ingin simpan?")) {
-            window.location.replace("daftar_pesanan_operator.php"); // Contoh: redirect ke halaman logout
-            alert("Data berhasil disimpan!"); // Alert setelah konfirmasi
-        } 
-        else {
-            //Membatalkan simpan
-        }
-    }
 
 	</script>
 
