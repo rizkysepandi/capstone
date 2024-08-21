@@ -112,6 +112,7 @@ function active_checkbox($value, $input){
 	        //Cek input berdasarkan kondisi form field untuk disabled fitur
 	        var nilaiAwalSubtotal;
 	        var nilaiawalpeserta;
+	        var nilaiAwaltotal;
 			var tombol_submit = $('#tombol_simpan');
 	             
 			function cekinput() {
@@ -124,13 +125,14 @@ function active_checkbox($value, $input){
 
 			    var nilaiSubtotal = $.trim(hargapkt);
 	            var nilaipeserta = $.trim(jumlahps);
+	            var nilai_total = $.trim(sumtagihan.val());
 
 	            // Log nilai subtotal ke konsol
 	            //console.log("Nilai subtotal:", nilaiSubtotal);
 	            //console.log("Nilai peserta:", nilaipeserta);
 
 	            // Matikan tombol simpan jika nilai berubah dari nilai awal
-	            if (nilaiSubtotal !== nilaiAwalSubtotal || jumlahps !== nilaiawalpeserta) {
+	            if (nilaiSubtotal !== nilaiAwalSubtotal || nilaipeserta !== nilaiawalpeserta || nilai_total !== nilaiAwaltotal) {
 	                tombol_submit.prop('disabled', true);
 	                //console.log("Tombol simpan dimatikan.");
 	            } else {
@@ -240,6 +242,7 @@ function active_checkbox($value, $input){
 			// Simpan nilai awal dari #tampilsubtotal dan #jumlahpeserta saat halaman dimuat
 		    nilaiAwalSubtotal = $.trim($('#tampilsubtotal').val());
 		    nilaiawalpeserta = $.trim($('#jumlahpeserta').val());
+		    nilaiAwaltotal = $.trim($('#tampiltagihan').val());
 
 		    // Panggil fungsi cekinput saat halaman dimuat pertama kali
 		    cekinput();
