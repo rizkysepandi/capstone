@@ -4,9 +4,21 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<title>Form Pemesanan</title>
 </head>
 <body>
+	<div class="container-fluid position-relative p-0 bg-warna">
+		<nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+			<a href="index.php" class="navbar-brand p-0">
+				<h3 class="text-primary m-0"><i class="fa fa-map-marked-alt me-3"></i>Beranda</h3>
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#">
+				<span class="fa fa-bars"></span>
+			</button>
+		</nav>	
+	</div>
+
 	<div class="container mt-3">
 		<form method="post" action="simpan.php" id="my_form">
 		    <h1>Form Pemesanan Paket Wisata</h1>
@@ -20,7 +32,7 @@
 			</div>
 			<div class="mb-3">
 				<label><b>Tanggal Mulai Wisata: </b></label>
-				<input type="date" class="form-control" id="datetime" name="tanggal_mulai_wst">
+				<input type="date" class="form-control" id="datetime" name="tanggal_mulai_wisata">
 			</div>
 			<div class="mb-3">
 				<label class="form-label"><b>Pilih Durasi Wisata: </b></label>
@@ -38,14 +50,14 @@
 			</div>
 			<div class="mb-3">
 				<p><b>Pelayanan Paket Perjalanan</b></p>
-				<input type="checkbox" class="form-check-input layanan" name="layanan_penginapan" value="1000000">
+				<input type="checkbox" class="form-check-input layanan" value="1000000" name="layanan_penginapan">
 				<label class="form-check-label"> Penginapan (Rp1.000.000)</label><br>
 				<input type="checkbox" class="form-check-input layanan" value="1200000" name="layanan_transportasi">
 				<label class="form-check-label"> Transportasi (Rp1.200.000)</label><br>
 				<input type="checkbox" class="form-check-input layanan" value="500000" name="layanan_makanan">
 				<label class="form-check-label"> Servis/Makan (Rp500.000)</label><br>
 		    </div>
-		    <div class="mb-3">
+			<div class="mb-3">
 				<label><b>Harga Paket Perjalanan: </b></label>
 				<input type="text" class="form-control" id="tampilsubtotal" name="harga_paket" readonly>
 			</div>
@@ -60,11 +72,11 @@
 				<label><b>Jumlah Tagihan: </b></label>
 				<input type="text" class="form-control" id="tampiltagihan" name="jumlah_tagihan" readonly>
 			</div>
-			
+
 			<div class="mb-3">
-			    <button type="submit" id="tombol_simpan" class="btn btn-primary" value="simpan">Simpan</button>
+			    <button type="submit" id="tombol_simpan" class="btn btn-primary" value="simpan" onclick="confirm_simpan()">Simpan</button>
 			    <button type="button" id="resetbtn" class="btn btn-danger">Reset</button>
-			    <a href="daftar_pesanan_operator.php" class="btn btn-primary">Kembali</a> 
+			    <a href="index.php" class="btn btn-primary">Kembali</a> 
 			</div> 
 		</form>
 	</div>
@@ -277,6 +289,16 @@
                 tombol_submit.prop('disabled', true);
             });
 		});
+
+	function confirm_simpan() {
+        if (confirm("Anda yakin ingin simpan?")) {
+            window.location.replace("index.php"); // Contoh: redirect ke halaman index
+            alert("Data berhasil disimpan!"); // Alert setelah konfirmasi
+        } 
+        else {
+            //Membatalkan simpan
+        }
+    }
 
 	</script>
 
