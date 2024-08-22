@@ -103,54 +103,58 @@
             /*------------------------------------------------*/
             //Cek input berdasarkan kondisi form field untuk disabled fitur
 
+	        var nilaiAwalSubtotal;
+	        var nilaiAwalpeserta;
+	        var nilaiAwaltotal;
+			var tombol_submit = $('#tombol_simpan');
+
 			function cekinput() {
 		        var dropdown = $("#durasi").val();
 		        var checkboxes = $(".layanan");
-		        var hargapkt = $("#tampilsubtotal");
+		        var hargapkt = $("#tampilsubtotal").val();
 		        var jumlahps = $("#jumlahpeserta");
 		        var tombol_hitung = $('#hitungtotal');
-		        var sumtagihan = $.trim($('#tampiltagihan').val());
-		        var tombol_submit = $('#tombol_simpan');
+		        var sumtagihan = $('#tampiltagihan').val();
+
+		        var nilaiSubtotal = $.trim(hargapkt);
+		        var nilaipeserta = $.trim(jumlahps);
+	            var nilai_total = $.trim(sumtagihan);
+
+		        // Log nilai subtotal ke konsol
+	            //console.log("Nilai subtotal:", nilaiSubtotal);
+	            //console.log("Nilai peserta:", nilaipeserta);
+	            //console.log("Nilai total:", nilai_total);
+
+		         // Matikan tombol simpan jika nilai berubah dari nilai awal
+	            if (nilaiSubtotal !== nilaiAwalSubtotal || nilaipeserta !== nilaiAwalpeserta || nilai_total !== nilaiAwaltotal){
+	                tombol_submit.prop('disabled', true);
+	                //console.log("Tombol simpan dimatikan.");
+	            } 
+	            else {
+	                tombol_submit.prop('disabled', false);
+	                //console.log("Tombol simpan diaktifkan.");
+	            }
 
 		        if (dropdown === "0") {
 		            // Nonaktifkan semua fitur jika dropdown belum dipilih
 		            checkboxes.prop('disabled', true).prop('checked', false);
-		            hargapkt.prop('disabled', true);
-		            jumlahps.prop('disabled', true);
+		            $('#tampilsubtotal').prop('disabled', true);
+		            $('#jumlahpeserta').prop('disabled', true);
 		            tombol_hitung.prop('disabled', true);
 		            $('#tampiltagihan').prop('disabled', true);
 		        } else {
 		            // Aktifkan semua fitur jika dropdown memilih nilai lain
 		            checkboxes.prop('disabled', false);
-		            hargapkt.prop('disabled', false);
-		            jumlahps.prop('disabled', false);
+		            $('#tampilsubtotal').prop('disabled', false);
+		            $('#jumlahpeserta').prop('disabled', false);
 		            tombol_hitung.prop('disabled', false);
-		            $('#tampiltagihan').prop('disabled', false);
+		           $('#tampiltagihan').prop('disabled', true);
 		        }
 
-		        // Cek apakah sumtagihan kosong atau tidak
-		        if (sumtagihan === "" || sumtagihan === "0") {
-		            // Nonaktifkan tombol submit jika #tampiltagihan kosong
-		            tombol_submit.prop('disabled', true);
-		        } else {
-		            // Aktifkan tombol submit jika ada nilai di #tampiltagihan
-		            tombol_submit.prop('disabled', false);
-		        }
 		    }
 
-		    // Memulai interval untuk menjalankan cekinput setiap 1 detik
-		    var intervalID = setInterval(cekinput, 1000);
-
 		    // Pasang event listener pada setiap input
-		    $("#durasi, #jumlahpeserta, #tampiltagihan").on('change input', function () {
-		        cekinput();
-		        // Hentikan interval jika tombol submit aktif (artinya kondisi sudah benar)
-		        if ($('#tampiltagihan').val() !== "" && $('#tampiltagihan').val() !== "0") {
-		            clearInterval(intervalID);
-		        }
-		    });
-		    // Panggil fungsi cekinput saat halaman dimuat pertama kali
-		    cekinput();
+		    $("#durasi, #jumlahpeserta, #tampiltagihan, .layanan").on('change input', cekinput);
 
 			/*------------------------------------------------*/
 
@@ -197,6 +201,9 @@
 
 		        // Menampilkan subtotal di dalam elemen dengan id tampilsubtotal
 		        $('#tampilsubtotal').val(IDR(hasilsub));
+
+		        // Panggil cekinput untuk memastikan tombol simpan aktif/nonaktif
+		        cekinput();
 		    }
 
 		    // Mengaktifkan event listener pada dropdown dan checkbox
@@ -205,8 +212,10 @@
 		        menu.addEventListener('change', hitungdropcheck);
 		    });
 
-		    // Simulasikan perubahan awal jika perlu
-		    $('#durasi').trigger('change');
+		    $('#hitungtotal').on('click', function(){
+		        tombol_submit.prop('disabled', false);
+		        console.log('Tombol hitung diklik, tombol submit diaktifkan.');
+		    });
 
 		    /*------------------------------------------------*/
 
@@ -230,6 +239,14 @@
 
 			});
 
+			// Simpan nilai awal dari #tampilsubtotal dan #jumlahpeserta saat halaman dimuat
+		    nilaiAwalSubtotal = $.trim($('#tampilsubtotal').val());
+		    nilaiAwalpeserta = $.trim($('#jumlahpeserta').val());
+		    nilaiAwaltotal = $.trim($('#tampiltagihan').val());
+
+			// Panggil fungsi cekinput saat halaman dimuat pertama kali
+		    cekinput();
+
 			/*------------------------------------------------*/
 
 	    	document.getElementById('resetbtn').addEventListener('click', function(){
@@ -249,7 +266,12 @@
                 });
 
                 // set dropdown kenilai default
-                document.getElementById('durasi').value = '0';
+                $("input[name='nama_pemesan']").val(''); //Hapus kolom nama
+			    $("input[name='nomor_hp']").val(''); //Hapus kolom nomor hp
+			    $("#datetime").val(''); //Hapus kolom tanggal
+			    $("#durasi").val('0'); // Placeholder untuk kolom durasi
+			    $("#tampilsubtotal").val(''); //Hapus kolom subtotal
+			    $("input[name='jumlah_tagihan']").val(''); //Hapus kolom jumlah tagihan
 
                 //Input jumlah peserta disabled
                 jumlahps.prop('disabled', true);
@@ -266,7 +288,7 @@
                 //Tombol submit disabled
                 tombol_submit.prop('disabled', true);
             });
-		
+            
 		});
 
 	function confirm_simpan() {
