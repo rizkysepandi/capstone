@@ -111,7 +111,7 @@ function active_checkbox($value, $input){
 			/*------------------------------------------------*/
 	        //Cek input berdasarkan kondisi form field untuk disabled fitur
 	        var nilaiAwalSubtotal;
-	        var nilaiawalpeserta;
+	        var nilaiAwalpeserta;
 	        var nilaiAwaltotal;
 			var tombol_submit = $('#tombol_simpan');
 	             
@@ -128,16 +128,17 @@ function active_checkbox($value, $input){
 	            var nilai_total = $.trim(sumtagihan.val());
 
 	            // Log nilai subtotal ke konsol
-	            //console.log("Nilai subtotal:", nilaiSubtotal);
-	            //console.log("Nilai peserta:", nilaipeserta);
+	            console.log("Nilai subtotal:", nilaiSubtotal);
+	            console.log("Nilai peserta:", nilaipeserta);
+	            console.log("Nilai total:", nilai_total);
 
 	            // Matikan tombol simpan jika nilai berubah dari nilai awal
-	            if (nilaiSubtotal !== nilaiAwalSubtotal || nilaipeserta !== nilaiawalpeserta || nilai_total !== nilaiAwaltotal) {
+	            if (nilaiSubtotal !== nilaiAwalSubtotal || nilaipeserta !== nilaiAwalpeserta || nilai_total !== nilaiAwaltotal) {
 	                tombol_submit.prop('disabled', true);
-	                //console.log("Tombol simpan dimatikan.");
+	                console.log("Tombol simpan dimatikan.");
 	            } else {
 	                tombol_submit.prop('disabled', false);
-	                //console.log("Tombol simpan diaktifkan.");
+	                console.log("Tombol simpan diaktifkan.");
 	            }
 
 		        if (dropdown === "0") {
@@ -241,7 +242,7 @@ function active_checkbox($value, $input){
 
 			// Simpan nilai awal dari #tampilsubtotal dan #jumlahpeserta saat halaman dimuat
 		    nilaiAwalSubtotal = $.trim($('#tampilsubtotal').val());
-		    nilaiawalpeserta = $.trim($('#jumlahpeserta').val());
+		    nilaiAwalpeserta = $.trim($('#jumlahpeserta').val());
 		    nilaiAwaltotal = $.trim($('#tampiltagihan').val());
 
 		    // Panggil fungsi cekinput saat halaman dimuat pertama kali
