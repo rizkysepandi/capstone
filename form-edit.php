@@ -128,17 +128,17 @@ function active_checkbox($value, $input){
 	            var nilai_total = $.trim(sumtagihan.val());
 
 	            // Log nilai subtotal ke konsol
-	            console.log("Nilai subtotal:", nilaiSubtotal);
-	            console.log("Nilai peserta:", nilaipeserta);
-	            console.log("Nilai total:", nilai_total);
+	            //console.log("Nilai subtotal:", nilaiSubtotal);
+	            //console.log("Nilai peserta:", nilaipeserta);
+	            //console.log("Nilai total:", nilai_total);
 
 	            // Matikan tombol simpan jika nilai berubah dari nilai awal
 	            if (nilaiSubtotal !== nilaiAwalSubtotal || nilaipeserta !== nilaiAwalpeserta || nilai_total !== nilaiAwaltotal) {
 	                tombol_submit.prop('disabled', true);
-	                console.log("Tombol simpan dimatikan.");
+	                //console.log("Tombol simpan dimatikan.");
 	            } else {
 	                tombol_submit.prop('disabled', false);
-	                console.log("Tombol simpan diaktifkan.");
+	                //console.log("Tombol simpan diaktifkan.");
 	            }
 
 		        if (dropdown === "0") {
